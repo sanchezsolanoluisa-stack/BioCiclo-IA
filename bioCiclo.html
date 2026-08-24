@@ -1,0 +1,2254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BioCiclo IA</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f6f8f5;
+    color:#26352a;
+    min-height:100vh;
+}
+
+.app{
+    max-width:480px;
+    min-height:100vh;
+    margin:auto;
+    background:#ffffff;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 0 25px rgba(0,0,0,.08);
+}
+
+.screen{
+    display:none;
+    min-height:100vh;
+    padding:28px 22px 100px;
+}
+
+.screen.active{
+    display:block;
+}
+
+.logo{
+    width:70px;
+    height:70px;
+    border-radius:22px;
+    background:linear-gradient(135deg,#75b84c,#3c8d52);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:32px;
+    margin:10px auto 20px;
+    box-shadow:0 8px 20px rgba(60,141,82,.25);
+}
+
+h1{
+    font-size:28px;
+    text-align:center;
+    color:#2f703e;
+    margin-bottom:10px;
+}
+
+h2{
+    font-size:23px;
+    color:#326f40;
+    margin-bottom:10px;
+}
+
+h3{
+    color:#386d43;
+    margin-bottom:7px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#68736b;
+    line-height:1.5;
+    margin-bottom:28px;
+}
+
+.card{
+    background:#f8faf7;
+    border-radius:18px;
+    padding:18px;
+    margin:14px 0;
+    border:1px solid #e4ebe2;
+}
+
+.card.green{
+    background:#eef8ed;
+    border-color:#d8ead5;
+}
+
+.card.warning{
+    background:#fff8e8;
+    border-color:#f2dfaa;
+}
+
+.card.danger{
+    background:#fff0ed;
+    border-color:#f0cfc7;
+}
+
+.card.blue{
+    background:#eef7fa;
+    border-color:#d5e9ef;
+}
+
+.input-group{
+    margin-bottom:16px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:7px;
+    color:#405247;
+}
+
+input, select{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid #d5ded4;
+    border-radius:12px;
+    font-size:15px;
+    background:white;
+    color:#27372b;
+    outline:none;
+}
+
+input:focus, select:focus{
+    border-color:#62a35c;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+    border-radius:13px;
+    padding:14px 18px;
+}
+
+.primary{
+    width:100%;
+    color:white;
+    background:linear-gradient(135deg,#65a94c,#39884f);
+    box-shadow:0 7px 16px rgba(58,136,79,.2);
+    margin-top:10px;
+}
+
+.secondary{
+    width:100%;
+    color:#367445;
+    background:#edf6ed;
+    margin-top:10px;
+}
+
+.outline{
+    width:100%;
+    background:white;
+    color:#39764a;
+    border:1px solid #70a976;
+    margin-top:10px;
+}
+
+.small-btn{
+    padding:9px 12px;
+    font-size:13px;
+}
+
+.feature{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:#f8faf7;
+    padding:16px;
+    border-radius:16px;
+    margin:12px 0;
+    border:1px solid #e8eee5;
+}
+
+.feature-icon{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#e8f4e5;
+    font-size:23px;
+    flex-shrink:0;
+}
+
+.feature p{
+    color:#69756d;
+    font-size:14px;
+    margin-top:3px;
+    line-height:1.4;
+}
+
+.progress{
+    height:8px;
+    background:#e5ebe4;
+    border-radius:10px;
+    overflow:hidden;
+    margin:15px 0;
+}
+
+.progress-bar{
+    height:100%;
+    background:linear-gradient(90deg,#76b85c,#3d8b51);
+    border-radius:10px;
+    transition:.4s;
+}
+
+.step{
+    text-align:center;
+    color:#78827a;
+    font-size:13px;
+    margin-bottom:18px;
+}
+
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid #e8ece7;
+}
+
+.info-row:last-child{
+    border-bottom:none;
+}
+
+.badge{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.badge.green{
+    background:#ddf0dc;
+    color:#397342;
+}
+
+.badge.orange{
+    background:#fff0c9;
+    color:#916b17;
+}
+
+.badge.red{
+    background:#f9dcd5;
+    color:#a34d3c;
+}
+
+.risk-circle{
+    width:145px;
+    height:145px;
+    border-radius:50%;
+    background:conic-gradient(#e7a849 0deg 248deg,#edf0eb 248deg 360deg);
+    margin:15px auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.risk-inner{
+    width:110px;
+    height:110px;
+    background:white;
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.risk-number{
+    font-size:31px;
+    font-weight:bold;
+    color:#d28a25;
+}
+
+.recommendation{
+    padding:17px;
+    border-radius:17px;
+    background:white;
+    border:1px solid #e2e9df;
+    margin:12px 0;
+}
+
+.rec-title{
+    font-weight:bold;
+    color:#386f43;
+    margin-bottom:7px;
+}
+
+.rec-example{
+    background:#f5f8f3;
+    border-radius:11px;
+    padding:11px;
+    margin-top:10px;
+    font-size:13px;
+    color:#5d6a60;
+    line-height:1.45;
+}
+
+.meta{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    margin-top:10px;
+}
+
+.meta span{
+    background:#eef4eb;
+    padding:5px 8px;
+    border-radius:8px;
+    font-size:11px;
+    color:#54705a;
+}
+
+.nav{
+    position:fixed;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:480px;
+    height:70px;
+    background:white;
+    border-top:1px solid #e4e9e3;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    z-index:50;
+}
+
+.nav button{
+    background:none;
+    padding:6px;
+    color:#778179;
+    font-size:11px;
+}
+
+.nav button.active{
+    color:#3e8a50;
+}
+
+.nav-icon{
+    display:block;
+    font-size:21px;
+    margin-bottom:3px;
+}
+
+.loading{
+    text-align:center;
+    padding:30px 0;
+}
+
+.spinner{
+    width:48px;
+    height:48px;
+    border:5px solid #e4eee2;
+    border-top-color:#4e9858;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:15px auto;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg);}
+}
+
+.choice-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.choice{
+    padding:13px;
+    border:1px solid #dce5d9;
+    border-radius:13px;
+    background:white;
+    cursor:pointer;
+    text-align:center;
+    font-size:14px;
+}
+
+.choice.selected{
+    background:#eaf5e8;
+    border-color:#65a45f;
+    color:#397443;
+    font-weight:bold;
+}
+
+.simulation{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-top:12px;
+}
+
+.sim-box{
+    flex:1;
+    text-align:center;
+    padding:12px 5px;
+    border-radius:12px;
+    background:#f5f8f4;
+}
+
+.sim-arrow{
+    font-size:20px;
+    color:#6a9c6b;
+}
+
+.percent{
+    font-size:32px;
+    font-weight:bold;
+    color:#42864d;
+}
+
+.history-item{
+    padding:15px;
+    border:1px solid #e1e8df;
+    border-radius:15px;
+    margin-bottom:10px;
+    background:#fbfcfa;
+}
+
+.notice{
+    font-size:12px;
+    color:#6e776f;
+    line-height:1.5;
+    margin-top:8px;
+}
+
+.hidden{
+    display:none!important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- PANTALLA 1 -->
+<section id="screen1" class="screen active">
+
+    <div class="logo">🌱</div>
+
+    <h1>BioCiclo IA</h1>
+
+    <p class="subtitle">
+        Gestión preventiva e inteligente de residuos orgánicos
+        según las condiciones reales de tu hogar.
+    </p>
+
+    <div class="card">
+        <div class="input-group">
+            <label>Correo electrónico</label>
+            <input type="email" id="loginEmail" placeholder="correo@ejemplo.com">
+        </div>
+
+        <div class="input-group">
+            <label>Contraseña</label>
+            <input type="password" id="loginPassword" placeholder="••••••••">
+        </div>
+
+        <button class="primary" onclick="goTo(2)">
+            Iniciar sesión
+        </button>
+
+        <button class="secondary" onclick="goTo(2)">
+            Crear una cuenta
+        </button>
+
+        <button class="outline" onclick="goTo(3)">
+            Continuar como invitado
+        </button>
+    </div>
+
+    <p class="notice" style="text-align:center;">
+        El prototipo permite realizar el análisis sin crear una cuenta.
+    </p>
+
+</section>
+
+
+<!-- PANTALLA 2 -->
+<section id="screen2" class="screen">
+
+    <div class="step">Crear cuenta</div>
+
+    <h2>👤 Registro de usuario</h2>
+
+    <p class="subtitle" style="text-align:left;">
+        Ingresa únicamente la información necesaria para utilizar BioCiclo.
+    </p>
+
+    <div class="input-group">
+        <label>Nombre</label>
+        <input id="regName" placeholder="Tu nombre">
+    </div>
+
+    <div class="input-group">
+        <label>Correo electrónico</label>
+        <input id="regEmail" type="email" placeholder="correo@ejemplo.com">
+    </div>
+
+    <div class="input-group">
+        <label>Contraseña</label>
+        <input id="regPassword" type="password" placeholder="Crea una contraseña">
+    </div>
+
+    <button class="primary" onclick="goTo(3)">
+        Continuar
+    </button>
+
+    <button class="outline" onclick="goTo(1)">
+        Volver
+    </button>
+
+</section>
+
+
+<!-- PANTALLA 3 -->
+<section id="screen3" class="screen">
+
+    <div class="logo">🌿</div>
+
+    <h1>Bienvenido a BioCiclo</h1>
+
+    <p class="subtitle">
+        No todos los hogares enfrentan las mismas condiciones.
+        BioCiclo analiza tu contexto antes de recomendarte qué hacer.
+    </p>
+
+    <div class="feature">
+        <div class="feature-icon">🧠</div>
+        <div>
+            <h3>Analiza</h3>
+            <p>Evalúa las condiciones de tu hogar y la gestión de residuos.</p>
+        </div>
+    </div>
+
+    <div class="feature">
+        <div class="feature-icon">🔎</div>
+        <div>
+            <h3>Identifica</h3>
+            <p>Distingue los factores que puedes controlar de los que no.</p>
+        </div>
+    </div>
+
+    <div class="feature">
+        <div class="feature-icon">🌱</div>
+        <div>
+            <h3>Actúa</h3>
+            <p>Genera acciones preventivas adaptadas a tu situación.</p>
+        </div>
+    </div>
+
+    <button class="primary" onclick="goTo(4)">
+        Iniciar análisis
+    </button>
+
+</section>
+
+
+<!-- PANTALLA 4 -->
+<section id="screen4" class="screen">
+
+    <div class="step">Paso 1 de 3</div>
+
+    <h2>🏠 Información del hogar</h2>
+
+    <div class="progress">
+        <div class="progress-bar" style="width:33%"></div>
+    </div>
+
+    <div class="input-group">
+        <label>Cantidad de personas</label>
+        <select id="people">
+            <option value="">Selecciona</option>
+            <option value="1">1 persona</option>
+            <option value="2">2 personas</option>
+            <option value="3">3 personas</option>
+            <option value="4">4 personas</option>
+            <option value="5">5 personas</option>
+            <option value="6">6 personas</option>
+            <option value="7">7 personas</option>
+            <option value="8">8 o más personas</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>Tipo de vivienda</label>
+        <select id="housing">
+            <option value="">Selecciona</option>
+            <option>Casa independiente</option>
+            <option>Casa en residencial</option>
+            <option>Apartamento</option>
+            <option>Condominio</option>
+            <option>Vivienda rural</option>
+            <option>Otra</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>Provincia</label>
+        <select id="province" onchange="loadCantons()">
+            <option value="">Cargando provincias...</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>Cantón</label>
+        <select id="canton" onchange="loadDistricts()" disabled>
+            <option value="">Selecciona primero la provincia</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>Distrito</label>
+        <select id="district" disabled>
+            <option value="">Selecciona primero el cantón</option>
+        </select>
+    </div>
+
+    <div class="card blue">
+        <strong>📍 ¿Por qué necesitamos tu ubicación?</strong>
+        <p class="notice">
+            Permite contextualizar el análisis y mantener correctamente
+            la relación Provincia → Cantón → Distrito.
+        </p>
+    </div>
+
+    <div class="input-group">
+        <label>¿Cómo gestionas actualmente tus residuos orgánicos?</label>
+
+        <div class="choice-grid">
+            <div class="choice" onclick="selectChoice(this,'management','Recolección municipal')">
+                🗑️ Recolección municipal
+            </div>
+
+            <div class="choice" onclick="selectChoice(this,'management','Compostaje')">
+                🌱 Compostaje
+            </div>
+
+            <div class="choice" onclick="selectChoice(this,'management','Separación para aprovechamiento')">
+                ♻️ Aprovechamiento
+            </div>
+
+            <div class="choice" onclick="selectChoice(this,'management','Combinación')">
+                🔄 Combinación
+            </div>
+        </div>
+    </div>
+
+    <button class="primary" onclick="validateScreen4()">
+        Continuar
+    </button>
+
+</section>
+
+
+<!-- PANTALLA 5 -->
+<section id="screen5" class="screen">
+
+    <div class="step">Paso 2 de 3</div>
+
+    <h2>🌡️ Variables ambientales</h2>
+
+    <div class="progress">
+        <div class="progress-bar" style="width:66%"></div>
+    </div>
+
+    <div class="card green">
+
+        <h3>Condiciones ambientales</h3>
+
+        <p class="notice">
+            BioCiclo intentará utilizar información ambiental disponible.
+            Si el dispositivo no dispone de sensores, puedes ingresar
+            una referencia.
+        </p>
+
+    </div>
+
+    <div class="input-group">
+        <label>Temperatura ambiental (°C)</label>
+        <input id="temperature" type="number" step="0.1" placeholder="Ej. 29.5">
+    </div>
+
+    <div class="input-group">
+        <label>Humedad ambiental (%)</label>
+        <input id="humidity" type="number" step="1" min="0" max="100" placeholder="Ej. 78">
+    </div>
+
+    <div class="card blue">
+        <strong>ℹ️ Importante</strong>
+        <p class="notice">
+            Un teléfono no necesariamente cuenta con sensores de temperatura
+            y humedad ambiental. Por eso BioCiclo no asumirá que todos los
+            dispositivos pueden obtener estos datos automáticamente.
+        </p>
+    </div>
+
+    <button class="primary" onclick="goTo(6)">
+        Continuar
+    </button>
+
+    <button class="outline" onclick="goTo(4)">
+        Volver
+    </button>
+
+</section>
+
+
+<!-- PANTALLA 6 -->
+<section id="screen6" class="screen">
+
+    <div class="step">Paso 3 de 3</div>
+
+    <h2>🗑️ Gestión de residuos</h2>
+
+    <div class="progress">
+        <div class="progress-bar" style="width:100%"></div>
+    </div>
+
+    <div class="input-group">
+        <label>Frecuencia habitual de recolección</label>
+
+        <select id="collection">
+            <option value="">Selecciona</option>
+            <option value="1">Varias veces por semana</option>
+            <option value="2">Una vez por semana</option>
+            <option value="3">Cada 2 semanas</option>
+            <option value="4">Una vez al mes</option>
+            <option value="5">Más de un mes</option>
+            <option value="6">Irregular</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>¿El servicio municipal suele cumplir la frecuencia?</label>
+
+        <div class="choice-grid">
+            <div class="choice" onclick="selectChoice(this,'service','Sí, normalmente')">
+                ✓ Sí
+            </div>
+
+            <div class="choice" onclick="selectChoice(this,'service','No, presenta retrasos')">
+                ⚠️ Presenta retrasos
+            </div>
+
+            <div class="choice" onclick="selectChoice(this,'service','Es irregular')">
+                🔄 Es irregular
+            </div>
+
+            <div class="choice" onclick="selectChoice(this,'service','No estoy seguro')">
+                ❓ No estoy seguro
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label>Cuando hay retrasos, ¿cuánto tiempo adicional se almacenan?</label>
+
+        <select id="delay">
+            <option value="">Selecciona</option>
+            <option value="1">1–3 días</option>
+            <option value="2">4–7 días</option>
+            <option value="3">Más de 7 días</option>
+            <option value="4">Es variable</option>
+            <option value="5">No aplica</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>Volumen aproximado de residuos orgánicos</label>
+
+        <select id="volume">
+            <option value="">Selecciona</option>
+            <option value="1">Bajo</option>
+            <option value="2">Moderado</option>
+            <option value="3">Alto</option>
+            <option value="4">Muy alto</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>Tiempo habitual de almacenamiento</label>
+
+        <select id="storage">
+            <option value="">Selecciona</option>
+            <option value="1">Menos de 2 días</option>
+            <option value="2">2–3 días</option>
+            <option value="3">4–7 días</option>
+            <option value="4">Más de 7 días</option>
+            <option value="5">Variable</option>
+        </select>
+    </div>
+
+    <div class="card warning">
+        <strong>🏛️ BioCiclo considera el contexto</strong>
+        <p class="notice">
+            Una frecuencia de recolección prolongada no significa
+            automáticamente una mala gestión por parte del usuario.
+            El servicio municipal puede ser un factor externo.
+        </p>
+    </div>
+
+    <button class="primary" onclick="processAnalysis()">
+        Analizar condiciones
+    </button>
+
+</section>
+
+
+<!-- PANTALLA 7 -->
+<section id="screen7" class="screen">
+
+    <div class="loading">
+
+        <div class="logo">🧠</div>
+
+        <h2>BioCiclo está analizando...</h2>
+
+        <div class="spinner"></div>
+
+        <div class="card">
+            <p id="processText">
+                Evaluando las condiciones del hogar...
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="info-row">
+                <span>🏠 Condiciones del hogar</span>
+                <span id="p1">⏳</span>
+            </div>
+
+            <div class="info-row">
+                <span>🌡️ Variables ambientales</span>
+                <span id="p2">⏳</span>
+            </div>
+
+            <div class="info-row">
+                <span>🗑️ Gestión de residuos</span>
+                <span id="p3">⏳</span>
+            </div>
+
+            <div class="info-row">
+                <span>🏛️ Servicio de recolección</span>
+                <span id="p4">⏳</span>
+            </div>
+
+            <div class="info-row">
+                <span>🔎 Factores de mayor impacto</span>
+                <span id="p5">⏳</span>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PANTALLA 8 -->
+<section id="screen8" class="screen">
+
+    <div class="step">Resultado del análisis</div>
+
+    <h2>🔎 Resultado BioCiclo</h2>
+
+    <div class="risk-circle" id="riskCircle">
+        <div class="risk-inner">
+            <span class="risk-number" id="riskNumber">--%</span>
+            <small>riesgo</small>
+        </div>
+    </div>
+
+    <h3 id="riskTitle" style="text-align:center;">
+        Analizando...
+    </h3>
+
+    <p class="subtitle" id="riskDescription">
+    </p>
+
+    <div class="card">
+
+        <h3>¿Qué está influyendo?</h3>
+
+        <div id="factors"></div>
+
+    </div>
+
+    <div class="card blue" id="externalFactor">
+
+        <strong>🏛️ Factor externo detectado</strong>
+
+        <p class="notice" id="externalText"></p>
+
+    </div>
+
+    <div class="card green">
+
+        <strong>🌱 Importante</strong>
+
+        <p class="notice">
+            El resultado no pretende responsabilizar al usuario por
+            condiciones externas. BioCiclo busca identificar qué acciones
+            preventivas sí están dentro de sus posibilidades.
+        </p>
+
+    </div>
+
+    <button class="primary" onclick="goTo(9)">
+        Ver mi plan de acción
+    </button>
+
+</section>
+
+
+<!-- PANTALLA 9 -->
+<section id="screen9" class="screen">
+
+    <div class="step">Plan personalizado</div>
+
+    <h2>🌱 Plan de acción BioCiclo</h2>
+
+    <p class="subtitle" style="text-align:left;">
+        Estas acciones se seleccionan según las condiciones que
+        BioCiclo detectó en tu hogar.
+    </p>
+
+    <div id="recommendations"></div>
+
+    <div class="card green">
+
+        <h3>🎯 Acción prioritaria</h3>
+
+        <p id="priorityAction" style="line-height:1.5;"></p>
+
+        <div class="meta">
+            <span>Dificultad: Baja</span>
+            <span>Costo: Bajo</span>
+            <span>Impacto potencial: Alto</span>
+        </div>
+
+        <button class="secondary" onclick="completeAction()">
+            Marcar como realizada
+        </button>
+
+    </div>
+
+    <div class="card blue">
+
+        <h3>🔮 ¿Qué pasaría si...?</h3>
+
+        <p class="notice">
+            Puedes explorar cómo cambiaría el resultado al mejorar
+            algunas condiciones que sí puedes controlar.
+        </p>
+
+        <div class="simulation">
+
+            <div class="sim-box">
+                <small>Actual</small>
+                <div class="percent" id="simCurrent">--%</div>
+            </div>
+
+            <div class="sim-arrow">→</div>
+
+            <div class="sim-box">
+                <small>Mejorando humedad</small>
+                <div class="percent" id="simHumidity">--%</div>
+            </div>
+
+        </div>
+
+        <div class="simulation">
+
+            <div class="sim-box">
+                <small>Actual</small>
+                <div class="percent" id="simCurrent2">--%</div>
+            </div>
+
+            <div class="sim-arrow">→</div>
+
+            <div class="sim-box">
+                <small>+ aprovechamiento</small>
+                <div class="percent" id="simReuse">--%</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <button class="primary" onclick="saveAnalysis()">
+        Guardar análisis
+    </button>
+
+</section>
+
+
+<!-- PANTALLA 10 -->
+<section id="screen10" class="screen">
+
+    <div class="step">Seguimiento</div>
+
+    <h2>📊 Historial y evolución</h2>
+
+    <div class="card green" style="text-align:center;">
+
+        <p style="color:#647267;">
+            Índice de gestión preventiva
+        </p>
+
+        <div class="percent" id="managementIndex">
+            72%
+        </div>
+
+        <p class="notice">
+            Mide cómo gestionas los residuos dentro de las condiciones
+            que enfrentas. No penaliza automáticamente una deficiencia
+            del servicio municipal.
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>🌱 Tu nivel actual</h3>
+
+        <div class="info-row">
+            <span>Gestión preventiva</span>
+            <span class="badge green" id="managementLevel">
+                En progreso
+            </span>
+        </div>
+
+        <div class="info-row">
+            <span>Acciones realizadas</span>
+            <strong id="actionsDone">0</strong>
+        </div>
+
+        <div class="info-row">
+            <span>Último análisis</span>
+            <span id="lastAnalysis">Hoy</span>
+        </div>
+
+    </div>
+
+    <h3>📚 Análisis anteriores</h3>
+
+    <div id="history"></div>
+
+    <button class="primary" onclick="restartAnalysis()">
+        Nuevo análisis
+    </button>
+
+    <button class="outline" onclick="window.print()">
+        Exportar / imprimir resultado
+    </button>
+
+</section>
+
+
+<!-- NAV -->
+<div class="nav hidden" id="nav">
+
+    <button onclick="goTo(3)">
+        <span class="nav-icon">🏠</span>
+        Inicio
+    </button>
+
+    <button onclick="goTo(4)">
+        <span class="nav-icon">🔎</span>
+        Análisis
+    </button>
+
+    <button onclick="goTo(10)">
+        <span class="nav-icon">📊</span>
+        Historial
+    </button>
+
+    <button onclick="goTo(1)">
+        <span class="nav-icon">👤</span>
+        Perfil
+    </button>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   BIOCICLO IA
+   LÓGICA PRINCIPAL
+========================================================= */
+
+let currentScreen = 1;
+
+let data = {
+    management:"",
+    service:"",
+    risk:0,
+    actions:0,
+    history:[]
+};
+
+
+/* =========================================================
+   NAVEGACIÓN
+========================================================= */
+
+function goTo(number){
+
+    document.querySelectorAll(".screen").forEach(s=>{
+        s.classList.remove("active");
+    });
+
+    const target=document.getElementById("screen"+number);
+
+    if(target){
+        target.classList.add("active");
+        currentScreen=number;
+    }
+
+    const nav=document.getElementById("nav");
+
+    if(number>=3){
+        nav.classList.remove("hidden");
+    }else{
+        nav.classList.add("hidden");
+    }
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+/* =========================================================
+   SELECCIONES
+========================================================= */
+
+function selectChoice(element,field,value){
+
+    element.parentElement
+        .querySelectorAll(".choice")
+        .forEach(c=>c.classList.remove("selected"));
+
+    element.classList.add("selected");
+
+    data[field]=value;
+}
+
+
+/* =========================================================
+   VALIDAR PANTALLA 4
+========================================================= */
+
+function validateScreen4(){
+
+    const people=document.getElementById("people").value;
+    const housing=document.getElementById("housing").value;
+    const province=document.getElementById("province").value;
+    const canton=document.getElementById("canton").value;
+    const district=document.getElementById("district").value;
+
+    if(!people || !housing || !province || !canton || !district){
+
+        alert("Completa la información del hogar, incluyendo provincia, cantón y distrito.");
+
+        return;
+    }
+
+    goTo(5);
+}
+
+
+/* =========================================================
+   CARGA DE UBICACIONES
+   API PÚBLICA DE UBICACIONES DE COSTA RICA
+========================================================= */
+
+const locationAPI="https://ubicaciones.paginasweb.cr";
+
+
+async function loadProvinces(){
+
+    const province=document.getElementById("province");
+
+    try{
+
+        const response=await fetch(
+            locationAPI+"/provincias.json"
+        );
+
+        if(!response.ok) throw new Error();
+
+        const provinces=await response.json();
+
+        province.innerHTML=
+            '<option value="">Selecciona una provincia</option>';
+
+        Object.entries(provinces).forEach(([id,name])=>{
+
+            const option=document.createElement("option");
+
+            option.value=id;
+            option.textContent=name;
+
+            province.appendChild(option);
+
+        });
+
+    }catch(error){
+
+        /* respaldo mínimo de provincias */
+
+        const provinces={
+            1:"San José",
+            2:"Alajuela",
+            3:"Cartago",
+            4:"Heredia",
+            5:"Guanacaste",
+            6:"Puntarenas",
+            7:"Limón"
+        };
+
+        province.innerHTML=
+            '<option value="">Selecciona una provincia</option>';
+
+        Object.entries(provinces).forEach(([id,name])=>{
+
+            const option=document.createElement("option");
+
+            option.value=id;
+            option.textContent=name;
+
+            province.appendChild(option);
+
+        });
+
+    }
+}
+
+
+async function loadCantons(){
+
+    const province=document.getElementById("province").value;
+
+    const canton=document.getElementById("canton");
+
+    const district=document.getElementById("district");
+
+    canton.disabled=true;
+    district.disabled=true;
+
+    canton.innerHTML=
+        '<option value="">Cargando cantones...</option>';
+
+    district.innerHTML=
+        '<option value="">Selecciona primero el cantón</option>';
+
+    if(!province) return;
+
+    try{
+
+        const response=await fetch(
+            locationAPI+
+            "/provincia/"+
+            province+
+            "/cantones.json"
+        );
+
+        if(!response.ok) throw new Error();
+
+        const cantons=await response.json();
+
+        canton.innerHTML=
+            '<option value="">Selecciona un cantón</option>';
+
+        Object.entries(cantons).forEach(([id,name])=>{
+
+            const option=document.createElement("option");
+
+            option.value=id;
+            option.textContent=name;
+
+            canton.appendChild(option);
+
+        });
+
+        canton.disabled=false;
+
+    }catch(error){
+
+        canton.innerHTML=
+            '<option value="">No fue posible cargar los cantones</option>';
+
+    }
+}
+
+
+async function loadDistricts(){
+
+    const province=document.getElementById("province").value;
+
+    const canton=document.getElementById("canton").value;
+
+    const district=document.getElementById("district");
+
+    district.disabled=true;
+
+    district.innerHTML=
+        '<option value="">Cargando distritos...</option>';
+
+    if(!province || !canton) return;
+
+    try{
+
+        const response=await fetch(
+
+            locationAPI+
+            "/provincia/"+
+            province+
+            "/canton/"+
+            canton+
+            "/distritos.json"
+
+        );
+
+        if(!response.ok) throw new Error();
+
+        const districts=await response.json();
+
+        district.innerHTML=
+            '<option value="">Selecciona un distrito</option>';
+
+        Object.entries(districts).forEach(([id,name])=>{
+
+            const option=document.createElement("option");
+
+            option.value=id;
+            option.textContent=name;
+
+            district.appendChild(option);
+
+        });
+
+        district.disabled=false;
+
+    }catch(error){
+
+        district.innerHTML=
+            '<option value="">No fue posible cargar los distritos</option>';
+
+    }
+}
+
+
+/* =========================================================
+   PROCESAMIENTO DEL ANÁLISIS
+========================================================= */
+
+function processAnalysis(){
+
+    const collection=document.getElementById("collection").value;
+    const volume=document.getElementById("volume").value;
+    const storage=document.getElementById("storage").value;
+
+    if(!collection || !volume || !storage){
+
+        alert("Completa la información de gestión de residuos.");
+
+        return;
+    }
+
+    goTo(7);
+
+    const steps=[
+        ["Evaluando las condiciones del hogar...",0],
+        ["Analizando las variables ambientales...",1],
+        ["Evaluando la gestión de residuos...",2],
+        ["Analizando la frecuencia de recolección...",3],
+        ["Identificando los factores de mayor impacto...",4]
+    ];
+
+    steps.forEach((step,index)=>{
+
+        setTimeout(()=>{
+
+            document.getElementById("processText").textContent=step[0];
+
+            document.getElementById("p"+(index+1)).textContent="✓";
+
+        },800*(index+1));
+
+    });
+
+    setTimeout(()=>{
+
+        calculateRisk();
+
+        showResult();
+
+        goTo(8);
+
+    },4800);
+
+}
+
+
+/* =========================================================
+   CÁLCULO CONTEXTUAL
+========================================================= */
+
+function calculateRisk(){
+
+    let risk=25;
+
+    const temperature=parseFloat(
+        document.getElementById("temperature").value
+    );
+
+    const humidity=parseFloat(
+        document.getElementById("humidity").value
+    );
+
+    const collection=
+        document.getElementById("collection").value;
+
+    const delay=
+        document.getElementById("delay").value;
+
+    const volume=
+        document.getElementById("volume").value;
+
+    const storage=
+        document.getElementById("storage").value;
+
+
+    /* Temperatura */
+
+    if(!isNaN(temperature)){
+
+        if(temperature>=30){
+            risk+=16;
+        }else if(temperature>=26){
+            risk+=10;
+        }else if(temperature>=23){
+            risk+=5;
+        }
+
+    }
+
+
+    /* Humedad */
+
+    if(!isNaN(humidity)){
+
+        if(humidity>=80){
+            risk+=16;
+        }else if(humidity>=70){
+            risk+=10;
+        }else if(humidity>=60){
+            risk+=5;
+        }
+
+    }
+
+
+    /* Recolección */
+
+    if(collection==="4") risk+=15;
+
+    if(collection==="5") risk+=18;
+
+    if(collection==="6") risk+=16;
+
+
+    /* Retrasos */
+
+    if(data.service==="No, presenta retrasos"){
+
+        risk+=10;
+
+    }
+
+    if(data.service==="Es irregular"){
+
+        risk+=12;
+
+    }
+
+
+    if(delay==="2") risk+=5;
+
+    if(delay==="3") risk+=10;
+
+    if(delay==="4") risk+=7;
+
+
+    /* Volumen */
+
+    if(volume==="3") risk+=6;
+
+    if(volume==="4") risk+=9;
+
+
+    /* Almacenamiento */
+
+    if(storage==="3") risk+=7;
+
+    if(storage==="4") risk+=13;
+
+    if(storage==="5") risk+=7;
+
+
+    data.risk=Math.min(95,Math.max(10,risk));
+
+}
+
+
+/* =========================================================
+   RESULTADO
+========================================================= */
+
+function showResult(){
+
+    const risk=data.risk;
+
+    document.getElementById("riskNumber").textContent=
+        risk+"%";
+
+    document.getElementById("simCurrent").textContent=
+        risk+"%";
+
+    document.getElementById("simCurrent2").textContent=
+        risk+"%";
+
+
+    let title="";
+    let description="";
+
+    if(risk<40){
+
+        title="🟢 Riesgo preventivo bajo";
+
+        description=
+            "Las condiciones analizadas presentan un nivel favorable. Mantener las prácticas preventivas puede ayudar a conservar este resultado.";
+
+    }else if(risk<65){
+
+        title="🟡 Riesgo preventivo moderado";
+
+        description=
+            "Se identificaron algunas condiciones que conviene vigilar. Existen acciones preventivas que pueden mejorar la gestión.";
+
+    }else if(risk<80){
+
+        title="🟠 Riesgo preventivo moderado-alto";
+
+        description=
+            "Varias condiciones pueden favorecer una acumulación problemática. BioCiclo recomienda actuar sobre los factores que sí puedes controlar.";
+
+    }else{
+
+        title="🔴 Riesgo preventivo alto";
+
+        description=
+            "Se identificaron varias condiciones que requieren atención. Algunas pueden estar relacionadas con factores externos como la frecuencia de recolección.";
+
+    }
+
+    document.getElementById("riskTitle").textContent=title;
+
+    document.getElementById("riskDescription").textContent=
+        description;
+
+
+    const factors=document.getElementById("factors");
+
+    factors.innerHTML="";
+
+
+    const temperature=parseFloat(
+        document.getElementById("temperature").value
+    );
+
+    const humidity=parseFloat(
+        document.getElementById("humidity").value
+    );
+
+    const collection=
+        document.getElementById("collection").value;
+
+    const storage=
+        document.getElementById("storage").value;
+
+
+    if(collection==="4" || collection==="5" || collection==="6"){
+
+        addFactor(
+            factors,
+            "🏛️ Frecuencia de recolección",
+            "Alto impacto",
+            "red"
+        );
+
+    }
+
+
+    if(data.service==="No, presenta retrasos" ||
+       data.service==="Es irregular"){
+
+        addFactor(
+            factors,
+            "⏱️ Retrasos o irregularidad del servicio",
+            "Alto impacto",
+            "red"
+        );
+
+    }
+
+
+    if(!isNaN(temperature) && temperature>=26){
+
+        addFactor(
+            factors,
+            "🌡️ Temperatura ambiental",
+            "Impacto medio",
+            "orange"
+        );
+
+    }
+
+
+    if(!isNaN(humidity) && humidity>=70){
+
+        addFactor(
+            factors,
+            "💧 Humedad ambiental",
+            "Impacto medio",
+            "orange"
+        );
+
+    }
+
+
+    if(storage==="4"){
+
+        addFactor(
+            factors,
+            "🗑️ Tiempo de almacenamiento",
+            "Impacto alto",
+            "red"
+        );
+
+    }
+
+
+    const external=document.getElementById("externalFactor");
+
+    if(
+        collection==="4" ||
+        collection==="5" ||
+        collection==="6" ||
+        data.service==="No, presenta retrasos" ||
+        data.service==="Es irregular"
+    ){
+
+        external.classList.remove("hidden");
+
+        document.getElementById("externalText").textContent=
+            "La frecuencia o regularidad del servicio de recolección influye en el tiempo que los residuos deben permanecer almacenados. Esta condición no depende directamente del usuario.";
+
+    }else{
+
+        external.classList.add("hidden");
+
+    }
+
+
+    generateRecommendations();
+
+}
+
+
+function addFactor(container,title,impact,color){
+
+    container.innerHTML+=`
+
+        <div class="info-row">
+
+            <span>${title}</span>
+
+            <span class="badge ${color}">
+                ${impact}
+            </span>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   RECOMENDACIONES INTELIGENTES
+========================================================= */
+
+function generateRecommendations(){
+
+    const container=
+        document.getElementById("recommendations");
+
+    container.innerHTML="";
+
+    let recommendations=[];
+
+
+    const humidity=parseFloat(
+        document.getElementById("humidity").value
+    );
+
+    const collection=
+        document.getElementById("collection").value;
+
+    const storage=
+        document.getElementById("storage").value;
+
+    const volume=
+        document.getElementById("volume").value;
+
+
+    /*
+       RECOLECCIÓN DEFICIENTE
+    */
+
+    if(
+        collection==="4" ||
+        collection==="5" ||
+        collection==="6" ||
+        data.service==="No, presenta retrasos" ||
+        data.service==="Es irregular"
+    ){
+
+        recommendations.push({
+
+            icon:"🏛️",
+
+            title:"Gestiona el período de espera",
+
+            text:
+                "La frecuencia de recolección es un factor externo. En lugar de intentar reducir un tiempo que no controlas, BioCiclo recomienda disminuir el impacto de esa espera.",
+
+            example:
+                "Ejemplo: separa los residuos que puedan aprovecharse y utiliza recipientes adecuados para mantener controlados los residuos que deben permanecer almacenados.",
+
+            meta:"Factor externo"
+
+        });
+
+    }
+
+
+    /*
+       HUMEDAD
+    */
+
+    if(!isNaN(humidity) && humidity>=70){
+
+        recommendations.push({
+
+            icon:"💧",
+
+            title:"Controla la humedad",
+
+            text:
+                "La humedad elevada puede favorecer condiciones poco convenientes durante el almacenamiento.",
+
+            example:
+                "Ejemplo: escurre restos de frutas y verduras antes de almacenarlos y combina los residuos húmedos con material seco adecuado cuando sea apropiado.",
+
+            meta:"Acción sencilla"
+
+        });
+
+    }
+
+
+    /*
+       ALMACENAMIENTO
+    */
+
+    if(storage==="4" || storage==="5"){
+
+        recommendations.push({
+
+            icon:"🪣",
+
+            title:"Mejora las condiciones de almacenamiento",
+
+            text:
+                "Cuando los residuos deben permanecer varios días almacenados, el manejo del recipiente se vuelve especialmente importante.",
+
+            example:
+                "Ejemplo: utiliza recipientes con tapa, evita acumulaciones innecesarias y mantén limpia el área donde se almacenan.",
+
+            meta:"Prevención"
+
+        });
+
+    }
+
+
+    /*
+       VOLUMEN
+    */
+
+    if(volume==="3" || volume==="4"){
+
+        recommendations.push({
+
+            icon:"♻️",
+
+            title:"Reduce la cantidad que necesita permanecer almacenada",
+
+            text:
+                "Un volumen elevado puede aumentar la dificultad de manejo durante los períodos de espera.",
+
+            example:
+                "Ejemplo: separa desde el origen los residuos vegetales que puedan aprovecharse mediante compostaje u otras alternativas disponibles.",
+
+            meta:"Aprovechamiento"
+
+        });
+
+    }
+
+
+    /*
+       RECOMENDACIÓN BASE
+    */
+
+    recommendations.push({
+
+        icon:"🌱",
+
+        title:"Separa los residuos desde el origen",
+
+        text:
+            "La separación permite manejar de forma diferente los residuos según sus características.",
+
+        example:
+            "Ejemplo: evita mezclar residuos orgánicos con materiales que dificulten su aprovechamiento o manejo posterior.",
+
+        meta:"Buena práctica"
+
+    });
+
+
+    /*
+       Mostrar máximo 5
+    */
+
+    recommendations=
+        recommendations.slice(0,5);
+
+
+    recommendations.forEach(rec=>{
+
+        container.innerHTML+=`
+
+            <div class="recommendation">
+
+                <div class="rec-title">
+                    ${rec.icon} ${rec.title}
+                </div>
+
+                <p class="notice">
+                    ${rec.text}
+                </p>
+
+                <div class="rec-example">
+
+                    <strong>🏠 Ejemplo práctico:</strong><br>
+
+                    ${rec.example}
+
+                </div>
+
+                <div class="meta">
+
+                    <span>${rec.meta}</span>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    let priority=
+        "Controla las condiciones que sí puedes modificar.";
+
+    if(
+        collection==="4" ||
+        collection==="5" ||
+        collection==="6"
+    ){
+
+        priority=
+            "Reduce el impacto del período de espera mediante separación, control de humedad y aprovechamiento de residuos cuando sea posible.";
+
+    }else if(
+        !isNaN(humidity) &&
+        humidity>=70
+    ){
+
+        priority=
+            "Comienza controlando la humedad de los residuos antes de almacenarlos.";
+
+    }else if(
+        storage==="4" ||
+        storage==="5"
+    ){
+
+        priority=
+            "Mejora las condiciones del recipiente y del área donde permanecen almacenados los residuos.";
+
+    }
+
+
+    document.getElementById("priorityAction").textContent=
+        priority;
+
+
+    /*
+       SIMULACIONES
+    */
+
+    const improvedHumidity=
+        Math.max(10,data.risk-12);
+
+    const improvedReuse=
+        Math.max(10,data.risk-18);
+
+
+    document.getElementById("simHumidity").textContent=
+        improvedHumidity+"%";
+
+    document.getElementById("simReuse").textContent=
+        improvedReuse+"%";
+
+}
+
+
+/* =========================================================
+   ACCIÓN COMPLETADA
+========================================================= */
+
+function completeAction(){
+
+    data.actions++;
+
+    localStorage.setItem(
+        "biocicloActions",
+        data.actions
+    );
+
+    alert(
+        "🌱 Acción registrada.\n\nBioCiclo ha añadido esta acción a tu seguimiento."
+    );
+
+}
+
+
+/* =========================================================
+   GUARDAR ANÁLISIS
+========================================================= */
+
+function saveAnalysis(){
+
+    const province=
+        document.getElementById("province");
+
+    const canton=
+        document.getElementById("canton");
+
+    const district=
+        document.getElementById("district");
+
+
+    const record={
+
+        date:new Date().toLocaleDateString("es-CR"),
+
+        province:
+            province.options[province.selectedIndex]?.text || "",
+
+        canton:
+            canton.options[canton.selectedIndex]?.text || "",
+
+        district:
+            district.options[district.selectedIndex]?.text || "",
+
+        risk:data.risk,
+
+        service:data.service,
+
+        actions:data.actions
+
+    };
+
+
+    data.history.push(record);
+
+    localStorage.setItem(
+        "biocicloHistory",
+        JSON.stringify(data.history)
+    );
+
+    updateHistory();
+
+    goTo(10);
+
+}
+
+
+/* =========================================================
+   HISTORIAL
+========================================================= */
+
+function updateHistory(){
+
+    const historyContainer=
+        document.getElementById("history");
+
+    historyContainer.innerHTML="";
+
+    if(data.history.length===0){
+
+        historyContainer.innerHTML=`
+
+            <div class="card">
+
+                <p class="notice">
+                    Todavía no tienes análisis guardados.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    data.history
+        .slice()
+        .reverse()
+        .forEach(item=>{
+
+            historyContainer.innerHTML+=`
+
+                <div class="history-item">
+
+                    <strong>🌱 Análisis BioCiclo</strong>
+
+                    <p class="notice">
+                        ${item.date}
+                    </p>
+
+                    <div class="info-row">
+
+                        <span>Ubicación</span>
+
+                        <strong>
+                            ${item.province}<br>
+                            ${item.canton}<br>
+                            ${item.district}
+                        </strong>
+
+                    </div>
+
+                    <div class="info-row">
+
+                        <span>Riesgo preventivo</span>
+
+                        <span class="badge orange">
+                            ${item.risk}%
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+}
+
+
+/* =========================================================
+   REINICIAR
+========================================================= */
+
+function restartAnalysis(){
+
+    document.querySelectorAll(
+        "input, select"
+    ).forEach(el=>{
+
+        if(
+            el.id!=="province" &&
+            el.id!=="canton" &&
+            el.id!=="district"
+        ){
+            el.value="";
+        }
+
+    });
+
+
+    data.management="";
+    data.service="";
+
+    document.querySelectorAll(".choice")
+        .forEach(c=>c.classList.remove("selected"));
+
+    goTo(4);
+
+}
+
+
+/* =========================================================
+   CARGAR DATOS GUARDADOS
+========================================================= */
+
+function loadSavedData(){
+
+    const savedHistory=
+        localStorage.getItem("biocicloHistory");
+
+    if(savedHistory){
+
+        try{
+
+            data.history=
+                JSON.parse(savedHistory);
+
+        }catch(e){
+
+            data.history=[];
+
+        }
+
+    }
+
+
+    const savedActions=
+        localStorage.getItem("biocicloActions");
+
+    if(savedActions){
+
+        data.actions=
+            parseInt(savedActions)||0;
+
+    }
+
+
+    updateHistory();
+
+    document.getElementById("actionsDone").textContent=
+        data.actions;
+
+
+    /*
+       Índice demostrativo:
+       se calcula a partir de acciones realizadas
+       y no penaliza directamente el servicio municipal.
+    */
+
+    const index=
+        Math.min(
+            100,
+            60+(data.actions*8)
+        );
+
+    document.getElementById("managementIndex").textContent=
+        index+"%";
+
+
+    let level="En progreso";
+
+    if(index>=90){
+
+        level="BioCiclo destacado";
+
+    }else if(index>=70){
+
+        level="Ecoactivo";
+
+    }else if(index>=50){
+
+        level="Cuidador";
+
+    }else{
+
+        level="Explorador";
+
+    }
+
+    document.getElementById("managementLevel").textContent=
+        level;
+
+}
+
+
+/* =========================================================
+   INICIO
+========================================================= */
+
+window.addEventListener("load",()=>{
+
+    loadProvinces();
+
+    loadSavedData();
+
+});
+
+</script>
+
+</body>
+</html>

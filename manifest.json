@@ -1,0 +1,16 @@
+{
+  "name": "BioCiclo IA",
+  "short_name": "BioCiclo",
+  "description": "Sistema inteligente para la gestión preventiva de residuos orgánicos domésticos.",
+  "start_url": "./BioCicloFuncional.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2E7D32",
+  "icons": [
+    {
+      "src": "./Icono.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
